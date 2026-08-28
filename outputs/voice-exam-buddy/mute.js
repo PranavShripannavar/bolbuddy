@@ -1,0 +1,1 @@
+$('#soundToggle').onclick=()=>{sound=!sound;$('#soundToggle').setAttribute('aria-label',sound?'Mute narration':'Unmute narration');$('#soundLabel').textContent=sound?'Mute narration':'Narration muted';if(!sound&&speechSynthesis)speechSynthesis.cancel()};

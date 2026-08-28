@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f0e8" />
+  <title>BolBuddy — Offline Voice Exam Tutor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+  .explanation-card h3{color:#c8e86d;margin:24px 0 8px;font-size:19px}.explanation-card h3:first-child{margin-top:0}.explanation-card pre,.explanation-card code{font-family:Consolas,monospace}.explanation-card pre{background:#0f2c29;padding:15px;border-radius:10px;overflow:auto}.explanation-card code{background:#28544d;padding:2px 5px;border-radius:4px;font-size:.9em}.teach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teach-grid article{display:flex;flex-direction:column;gap:6px;background:#28544d;padding:14px;border-radius:9px}.teach-grid article b{color:#c8e86d}.teach-grid article span{font-size:14px;line-height:1.4}.teach-grid article code{width:max-content;max-width:100%}.explanation-card table{border-collapse:collapse;width:100%;font-size:14px;background:#28544d}.explanation-card th,.explanation-card td{padding:9px;border:1px solid #417068;text-align:left}.explanation-card th{color:#c8e86d}@media(max-width:650px){.teach-grid{grid-template-columns:1fr}}
+  .level-row{display:flex;align-items:center;justify-content:space-between;padding:0 4px 15px;font-size:13px;font-weight:700}.level-options{display:flex;gap:6px}.level{border:1px solid #d9d3c8;background:white;border-radius:99px;padding:7px 10px;cursor:pointer;font:600 12px sans-serif}.level.active{background:#172e2b;color:white;border-color:#172e2b}.summary-card{background:#c8e86d;border-radius:14px;padding:19px 22px;margin-bottom:16px}.summary-card span,.history-head small{font-size:11px;font-weight:700;letter-spacing:.12em;color:#47610d}.summary-card p{margin:7px 0 0;font-size:16px;line-height:1.45}.history-card{margin-top:16px;background:#fffdf8;border:1px solid #d9d3c8;border-radius:15px;padding:20px}.history-head{display:flex;justify-content:space-between;align-items:center}.history-head h3{font:400 25px Georgia,serif;margin:3px 0 0}.history-head strong{font-size:15px;background:#ede8de;padding:8px 12px;border-radius:99px}.history-list{margin-top:14px}.history-list>p{color:#66716d;font-size:13px}.history-item{display:grid;grid-template-columns:1.4fr 1.2fr auto auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #d9d3c8;font-size:13px}.history-item span,.history-item em{color:#66716d;font-style:normal}.history-item b{color:#ec5b2a}@media(max-width:650px){.level-row{display:block}.level-options{margin-top:8px}.history-item{grid-template-columns:1fr auto}.history-item span{grid-column:1}.history-item em{grid-column:2;grid-row:2}}
+  .quiz-timer{display:flex;justify-content:space-between;align-items:center;background:#fffdf8;border:1px solid #d9d3c8;border-radius:12px;padding:13px 16px;margin:-4px 0 14px;font-size:13px}.quiz-timer span{color:#66716d;font-weight:700}.quiz-timer strong{font-variant-numeric:tabular-nums}.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.review-grid div{background:rgba(255,255,255,.16);padding:12px;border-radius:8px}.review-grid small{display:block;opacity:.8;font-size:11px}.review-grid b{font-size:18px}@media(max-width:650px){.review-grid{grid-template-columns:1fr}}
+  .start-quiz{margin:-4px 0 14px;border:1px solid #ec5b2a;background:#ec5b2a;color:white;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer}.start-quiz span{margin-left:8px}.quiz.locked{opacity:.55;pointer-events:none}
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="#">Bol<span>Buddy</span></a>
+    <div class="offline-pill"><i></i> Offline-ready</div>
+    <button id="soundToggle" class="icon-button" aria-label="Mute narration">🔊 <span id="soundLabel">Mute narration</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Your personal exam coach — बिना इंटरनेट</div>
+      <h1>Ask out loud.<br><em>Learn for real.</em></h1>
+      <p>Speak naturally in Hindi, English, or Hinglish. Get a clear explanation and a quick quiz—right on your device.</p>
+    </section>
+
+    <section class="ask-card">
+      <div class="mode-row">
+        <label for="language">I’ll speak in</label>
+        <select id="language"><option value="hinglish">Hindi + English</option><option value="english">English</option><option value="hindi">हिन्दी</option></select>
+      </div>
+      <textarea id="question" rows="3" placeholder="Try: Photosynthesis kya hota hai?"></textarea>
+      <div class="level-row" role="group" aria-label="Choose your level">
+        <span>Choose your level</span>
+        <div class="level-options"><button class="level active" data-level="beginner">Beginner</button><button class="level" data-level="intermediate">Intermediate</button><button class="level" data-level="advanced">Advanced</button></div>
+      </div>
+      <div class="ask-actions">
+        <button id="micButton" class="mic-button"><span class="mic-icon">●</span><span class="mic-label">Hold to speak</span></button>
+        <button id="askButton" class="ask-button">Explain it <span>→</span></button>
+      </div>
+      <p id="voiceStatus" class="voice-status" aria-live="polite">Or type your question above</p>
+    </section>
+
+    <section id="lesson" class="lesson hidden" aria-live="polite">
+      <div class="section-heading"><span>01</span><div><small>UNDERSTAND</small><h2 id="lessonTitle"></h2></div></div>
+      <div class="summary-card"><span>IN ONE MINUTE</span><p id="summary"></p></div>
+      <div class="explanation-card">
+        <p id="explanation"></p>
+        <div class="key-point"><b>Remember</b><span id="keyPoint"></span></div>
+      </div>
+
+      <div class="section-heading"><span>02</span><div><small>CHECK YOURSELF</small><h2>10 quick questions</h2></div></div>
+      <div id="quizTimer" class="quiz-timer"><span>Quiz timer</span><strong>Start answering to begin</strong></div>
+      <button id="startQuiz" class="start-quiz">Start quiz <span>→</span></button>
+      <div id="quiz" class="quiz"></div>
+      <div id="result" class="result hidden"></div>
+    </section>
+
+    <section class="progress-section">
+      <div class="section-heading"><span>↗</span><div><small>YOUR PROGRESS</small><h2>What to revise next</h2></div></div>
+      <div class="progress-grid">
+        <div class="stat-card"><strong id="sessions">0</strong><span>topics practised</span></div>
+        <div class="stat-card"><strong id="accuracy">—</strong><span>quiz accuracy</span></div>
+        <div class="weak-card"><span>Needs a little love</span><strong id="weakTopic">Complete a quiz to find out</strong></div>
+      </div>
+      <div class="history-card"><div class="history-head"><div><small>LEARNING LOG</small><h3>Earlier learnings</h3></div><strong id="totalTime">0 min</strong></div><div id="history" class="history-list"><p>Your finished sessions will appear here.</p></div></div>
+    </section>
+  </main>
+
+  <footer><b>BolBuddy</b><span>Your learning stays on your device.</span></footer>
+  <script src="app.js"></script>
+  <script src="upgrade.js"></script>
+  <script src="mute.js"></script>
+</body>
+</html>
