@@ -8,6 +8,8 @@ node server.js
 
 Or simply double-click `start-bolbuddy.cmd`. Keep the small server window open while using the app.
 
+For a fresh computer, double-click `setup-bolbuddy.cmd` once. It downloads Node.js, Ollama, Python, the local Qwen tutor model, and Faster-Whisper. This requires internet only during setup; it can take several minutes and a few GB of disk space.
+
 ## Demo path
 
 1. Disconnect Wi-Fi to establish the offline story.
