@@ -4,7 +4,7 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-RUNTIME = os.path.join(ROOT, "work", "voice-runtime")
+RUNTIME = os.path.join(os.path.dirname(__file__), ".voice-runtime")
 MODEL_DIR = os.path.join(ROOT, "work", "whisper-model")
 sys.path.insert(0, RUNTIME)
 

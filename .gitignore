@@ -1,4 +1,5 @@
 work/
+outputs/voice-exam-buddy/.voice-runtime/
 node_modules/
 __pycache__/
 *.pyc
