@@ -17,6 +17,12 @@ Or simply double-click `start-bolbuddy.cmd`. Keep the small server window open w
 
 ## Current MVP vs. production stack
 
-The interface, Qwen-generated lessons, browser text-to-speech, quizzes, and progress tracking run locally. Browser speech recognition support varies and can require a network connection, so production should replace it with local Faster-Whisper. The app currently uses the installed local Qwen 2.5 3B model for any study topic.
+The interface, Qwen-generated lessons, local Faster-Whisper transcription, browser text-to-speech, quizzes, and progress tracking run locally. The app currently uses the installed local Qwen 2.5 3B model for any study topic.
+
+## Offline voice input
+
+BolBuddy now records audio in the browser and transcribes it with local Faster-Whisper. The first setup downloads the multilingual `base` model; after that, disconnect from Wi-Fi and click **Hold to speak** to begin recording, then click it again to stop and transcribe. Allow the browser microphone permission when prompted.
+
+The transcription runtime and model are intentionally excluded from Git because they are machine-local dependencies.
 
 Recommended local API contract: `POST /api/tutor` with `{ question, language }`, returning `{ title, explanation, keyPoint, quiz }`.
