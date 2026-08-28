@@ -8,15 +8,21 @@ function Require-Command([string]$name, [string]$package) {
   return [bool](Get-Command $name -ErrorAction SilentlyContinue)
 }
 
+function Restart-Setup {
+  Write-Host "Restarting setup to continue with the newly installed dependency..." -ForegroundColor Cyan
+  Start-Process powershell.exe -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $PSCommandPath
+  exit
+}
+
 Write-Host "BolBuddy one-time offline setup" -ForegroundColor Cyan
 if (-not (Require-Command 'node' 'OpenJS.NodeJS.LTS')) {
-  throw "Node.js was installed. Run setup-bolbuddy.cmd once more to continue."
+  Restart-Setup
 }
 if (-not (Require-Command 'ollama' 'Ollama.Ollama')) {
-  throw "Ollama was installed. Run setup-bolbuddy.cmd once more to continue."
+  Restart-Setup
 }
 if (-not (Require-Command 'py' 'Python.Python.3.12')) {
-  throw "Python was installed. Run setup-bolbuddy.cmd once more to continue."
+  Restart-Setup
 }
 
 Write-Host "Downloading the local tutor model (one-time)..." -ForegroundColor Yellow
