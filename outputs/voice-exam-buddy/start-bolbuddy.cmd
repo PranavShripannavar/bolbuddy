@@ -1,6 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+set "BOLBUDDY_PYTHON=C:\Users\shrip\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
 where node >nul 2>nul
 if errorlevel 1 (
   echo Node.js is required to run BolBuddy.
